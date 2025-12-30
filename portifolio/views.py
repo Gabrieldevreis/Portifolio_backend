@@ -1,10 +1,28 @@
-from django.shortcuts import render
-from .serializers import ProjectsSerializers
 from rest_framework.viewsets import ModelViewSet
-from .models import Projects
+from .models import Projects, Profile, Certificate, Experience
+from .serializers import (
+    ProjectsSerializers,
+    ProfileSerializers,
+    CertificateSerializers,
+    ExperienceSerializers,
+)
 
-# Create your views here.
 
 class ProjectView(ModelViewSet):
-    queryset= Projects.objects.all()
+    queryset = Projects.objects.all()
     serializer_class = ProjectsSerializers
+
+
+class ProfileView(ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializers
+
+
+class CertificateView(ModelViewSet):
+    queryset = Certificate.objects.all()
+    serializer_class = CertificateSerializers
+
+
+class ExperienceView(ModelViewSet):
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializers
