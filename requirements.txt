@@ -1,5 +1,6 @@
 Django>=4.2
 django-jazzmin
+gunicorn
 Pillow
 psycopg2-binary
 python-decouple

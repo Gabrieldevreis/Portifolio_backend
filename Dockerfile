@@ -1,26 +1,25 @@
-# Imagem base com Python
+# Imagem base
 FROM python:3.10-slim
 
-# Diretório de trabalho dentro do container
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Dependências do sistema (opcional, mas recomendado)
+# Dependências do sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia o arquivo de dependências
+# Dependências Python
 COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Instala dependências do Python
-RUN pip install -r requirements.txt
-
-# Copia o restante do projeto
+# Código do projeto
 COPY . .
 
-# Porta padrão do Django
-EXPOSE 8000
-
-# Comando para iniciar o servidor
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Comando correto para Railway
+CMD python manage.py migrate && \
+    python manage.py collectstatic --noinput && \
+    gunicorn core.wsgi:application --bind 0.0.0.0:8000
